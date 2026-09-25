@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Control de Adherencia</title>
+
+    <script src="datos_adherencia.js"></script>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef2f5;
+            color: #17212b;
+        }
+
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+
+        .encabezado {
+            background: linear-gradient(
+                135deg,
+                #173f52,
+                #26758c
+            );
+
+            color: white;
+
+            padding: 30px;
+
+            border-radius: 16px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .encabezado h1 {
+            margin: 0 0 8px 0;
+            font-size: 30px;
+        }
+
+
+        .encabezado p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+
+        .fecha {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           FILTROS
+        ===================================================== */
+
+        .filtros {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 18px 20px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+
+        .filtro {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .filtros label {
+            font-size: 13px;
+
+            color: #66727e;
+
+            font-weight: bold;
+        }
+
+
+        .filtros select {
+            border: 1px solid #d8dee4;
+
+            border-radius: 8px;
+
+            padding: 10px 14px;
+
+            font-size: 14px;
+
+            color: #17212b;
+
+            background: white;
+
+            min-width: 170px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           INDICADORES PRINCIPALES
+        ===================================================== */
+
+        .indicadores {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .tarjeta {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+
+        .titulo-indicador {
+
+            font-size: 13px;
+
+            color: #66727e;
+
+            font-weight: bold;
+        }
+
+
+        .valor {
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+        }
+
+
+        .descripcion {
+
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #66727e;
+        }
+
+
+        /* =====================================================
+           CONTROL DE TIEMPOS AUXILIARES
+        ===================================================== */
+
+        .seccion-auxiliares {
+
+            margin-top: 25px;
+        }
+
+
+        .seccion-auxiliares h2 {
+
+            margin-bottom: 15px;
+
+            font-size: 20px;
+        }
+
+
+        .auxiliares {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .auxiliar-card {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+
+        .auxiliar-titulo {
+
+            font-size: 13px;
+
+            color: #66727e;
+
+            font-weight: bold;
+        }
+
+
+        .auxiliar-valor {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+        }
+
+
+        .auxiliar-descripcion {
+
+            margin-top: 5px;
+
+            font-size: 12px;
+
+            color: #66727e;
+        }
+
+
+        /* =====================================================
+           DETALLE POR AGENTE
+        ===================================================== */
+
+        .seccion-detalle {
+
+            margin-top: 30px;
+        }
+
+
+        .seccion-detalle h2 {
+
+            margin-bottom: 15px;
+
+            font-size: 20px;
+        }
+
+
+        .tabla-contenedor {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            overflow-x: auto;
+        }
+
+
+        .tabla-agentes {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        .tabla-agentes th {
+
+            text-align: left;
+
+            font-size: 12px;
+
+            color: #66727e;
+
+            padding: 12px;
+
+            border-bottom:
+                2px solid #eef2f5;
+        }
+
+
+        .tabla-agentes td {
+
+            padding: 14px 12px;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid #eef2f5;
+        }
+
+
+        .tabla-agentes tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           NOMBRE DEL AGENTE
+        ===================================================== */
+
+        .agente-click {
+
+            cursor: pointer;
+
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+
+        .agente-click:hover {
+
+            color: #26758c;
+        }
+
+
+        .flecha {
+
+            display: inline-block;
+
+            width: 18px;
+
+            font-size: 12px;
+
+            color: #66727e;
+        }
+
+
+        /* =====================================================
+           FILA DE DETALLE
+        ===================================================== */
+
+        .fila-detalle td {
+
+            padding: 0;
+
+            background: #f7f9fa;
+
+            border-bottom:
+                1px solid #e2e7eb;
+        }
+
+
+        .detalle-agente {
+
+            padding: 20px 30px 22px 45px;
+
+            border-left:
+                3px solid #26758c;
+        }
+
+
+        .detalle-titulo {
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            color: #66727e;
+
+            margin-bottom: 15px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .detalle-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .detalle-item {
+
+            background: white;
+
+            border-radius: 8px;
+
+            padding: 13px 15px;
+
+            border:
+                1px solid #e2e7eb;
+        }
+
+
+        .detalle-label {
+
+            display: block;
+
+            font-size: 11px;
+
+            color: #66727e;
+
+            margin-bottom: 5px;
+        }
+
+
+        .detalle-valor {
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #17212b;
+        }
+
+
+        .detalle-separador {
+
+            margin: 20px 0 15px 0;
+
+            border: none;
+
+            border-top:
+                1px solid #e2e7eb;
+        }
+
+
+        /* =====================================================
+           ESTADOS
+        ===================================================== */
+
+        .estado-ok {
+
+            color: #218739;
+
+            font-weight: bold;
+        }
+
+
+        .estado-alerta {
+
+            color: #b7791f;
+
+            font-weight: bold;
+        }
+
+
+        .estado-critico {
+
+            color: #c53030;
+
+            font-weight: bold;
+        }
+
+
+        .estado-ok-bg {
+
+            border-left: 4px solid #218739;
+        }
+
+
+        .estado-alerta-bg {
+
+            border-left: 4px solid #d69e2e;
+        }
+
+
+        .estado-critico-bg {
+
+            border-left: 4px solid #c53030;
+        }
+
+
+        .estado-neutral {
+
+            color: #66727e;
+        }
+
+
+        .sin-datos {
+
+            color: #66727e;
+
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .indicadores {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .auxiliares {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .filtros {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .detalle-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .indicadores {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .auxiliares {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .detalle-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <!-- =====================================================
+         ENCABEZADO
+    ===================================================== -->
+
+    <div class="encabezado">
+
+        <h1>
+            Control de Adherencia
+        </h1>
+
+        <p>
+            Seguimiento diario de adherencia de la operación
+        </p>
+
+        <div
+            class="fecha"
+            id="fecha"
+        >
+            Cargando fecha...
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTROS
+    ===================================================== -->
+
+    <div class="filtros">
+
+
+        <div class="filtro">
+
+            <label for="selectorMes">
+                MES
+            </label>
+
+            <select
+                id="selectorMes"
+            >
+            </select>
+
+        </div>
+
+
+        <div class="filtro">
+
+            <label for="selectorDia">
+                DÍA
+            </label>
+
+            <select
+                id="selectorDia"
+            >
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         INDICADORES
+    ===================================================== -->
+
+    <div class="indicadores">
+
+
+        <div class="tarjeta">
+
+            <div class="titulo-indicador">
+                ADHERENCIA
+            </div>
+
+            <div
+                class="valor"
+                id="adherencia"
+            >
+                —
+            </div>
+
+            <div class="descripcion">
+                Promedio del día
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="titulo-indicador">
+                AGENTES
+            </div>
+
+            <div
+                class="valor"
+                id="agentes"
+            >
+                —
+            </div>
+
+            <div class="descripcion">
+                Agentes evaluados
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="titulo-indicador">
+                CUMPLEN ≥ 90%
+            </div>
+
+            <div
+                class="valor"
+                id="cumplen"
+            >
+                —
+            </div>
+
+            <div class="descripcion">
+                Dentro del objetivo
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="titulo-indicador">
+                REQUIEREN GESTIÓN
+            </div>
+
+            <div
+                class="valor"
+                id="gestion"
+            >
+                —
+            </div>
+
+            <div class="descripcion">
+                Adherencia inferior al 90%
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         AUXILIARES
+    ===================================================== -->
+
+    <div class="seccion-auxiliares">
+
+        <h2>
+            Control de tiempos auxiliares
+        </h2>
+
+
+        <div class="auxiliares">
+
+
+            <div class="auxiliar-card">
+
+                <div class="auxiliar-titulo">
+                    ALMUERZO
+                </div>
+
+                <div
+                    class="auxiliar-valor"
+                    id="excesoAlmuerzo"
+                >
+                    —
+                </div>
+
+                <div class="auxiliar-descripcion">
+                    Agentes sobre 60 minutos
+                </div>
+
+            </div>
+
+
+            <div class="auxiliar-card">
+
+                <div class="auxiliar-titulo">
+                    DESCANSO
+                </div>
+
+                <div
+                    class="auxiliar-valor"
+                    id="excesoDescanso"
+                >
+                    —
+                </div>
+
+                <div class="auxiliar-descripcion">
+                    Agentes sobre 30 minutos
+                </div>
+
+            </div>
+
+
+            <div class="auxiliar-card">
+
+                <div class="auxiliar-titulo">
+                    BAÑO
+                </div>
+
+                <div
+                    class="auxiliar-valor"
+                    id="excesoBano"
+                >
+                    —
+                </div>
+
+                <div class="auxiliar-descripcion">
+                    Agentes sobre 10 minutos
+                </div>
+
+            </div>
+
+
+            <div class="auxiliar-card">
+
+                <div class="auxiliar-titulo">
+                    PAUSAS ACTIVAS
+                </div>
+
+                <div
+                    class="auxiliar-valor"
+                    id="excesoPausas"
+                >
+                    —
+                </div>
+
+                <div class="auxiliar-descripcion">
+                    Agentes sobre 5 minutos
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DETALLE POR AGENTE
+    ===================================================== -->
+
+    <div class="seccion-detalle">
+
+        <h2>
+            Detalle por agente
+        </h2>
+
+
+        <div class="tabla-contenedor">
+
+            <table class="tabla-agentes">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Agente
+                        </th>
+
+                        <th>
+                            Adherencia
+                        </th>
+
+                        <th>
+                            Almuerzo
+                        </th>
+
+                        <th>
+                            Descanso
+                        </th>
+
+                        <th>
+                            Baño
+                        </th>
+
+                        <th>
+                            Pausas activas
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="tablaAgentes"
+                >
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    // =========================================================
+    // VALIDAR DATOS
+    // =========================================================
+
+    if (
+
+        typeof ADHERENCIA_DATA ===
+            "undefined"
+
+        ||
+
+        !Array.isArray(
+            ADHERENCIA_DATA
+        )
+
+        ||
+
+        ADHERENCIA_DATA.length === 0
+
+    ) {
+
+        document.getElementById(
+            "fecha"
+        ).textContent =
+            "No hay información disponible.";
+
+    }
+
+    else {
+
+
+        // =====================================================
+        // REFERENCIAS
+        // =====================================================
+
+        const selectorMes =
+            document.getElementById(
+                "selectorMes"
+            );
+
+
+        const selectorDia =
+            document.getElementById(
+                "selectorDia"
+            );
+
+
+        // =====================================================
+        // MESES DISPONIBLES
+        // =====================================================
+
+        const mesesDisponibles = [
+
+            ...new Set(
+
+                ADHERENCIA_DATA.map(
+                    registro =>
+                        registro.fecha.substring(
+                            0,
+                            7
+                        )
+                )
+
+            )
+
+        ].sort();
+
+
+        // =====================================================
+        // NOMBRES DE MESES
+        // =====================================================
+
+        const nombresMeses = [
+
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+
+        ];
+
+
+        // =====================================================
+        // CARGAR MESES
+        // =====================================================
+
+        mesesDisponibles.forEach(
+            mes => {
+
+
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                const partes =
+                    mes.split("-");
+
+
+                const anio =
+                    partes[0];
+
+
+                const numeroMes =
+                    parseInt(
+                        partes[1],
+                        10
+                    );
+
+
+                opcion.value =
+                    mes;
+
+
+                opcion.textContent =
+                    nombresMeses[
+                        numeroMes - 1
+                    ]
+                    +
+                    " "
+                    +
+                    anio;
+
+
+                selectorMes.appendChild(
+                    opcion
+                );
+
+            }
+        );
+
+
+        // =====================================================
+        // ÚLTIMO MES
+        // =====================================================
+
+        selectorMes.value =
+            mesesDisponibles[
+                mesesDisponibles.length - 1
+            ];
+
+
+        // =====================================================
+        // CARGAR DÍAS
+        // =====================================================
+
+        function cargarDias() {
+
+
+            selectorDia.innerHTML = "";
+
+
+            const mesSeleccionado =
+                selectorMes.value;
+
+
+            const diasDisponibles = [
+
+                ...new Set(
+
+                    ADHERENCIA_DATA
+
+                        .filter(
+                            registro =>
+                                registro.fecha.substring(
+                                    0,
+                                    7
+                                )
+                                ===
+                                mesSeleccionado
+                        )
+
+                        .map(
+                            registro =>
+                                registro.fecha
+                        )
+
+                )
+
+            ].sort();
+
+
+            diasDisponibles.forEach(
+                fecha => {
+
+
+                    const opcion =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    const dia =
+                        fecha.substring(
+                            8,
+                            10
+                        );
+
+
+                    opcion.value =
+                        fecha;
+
+
+                    opcion.textContent =
+                        "Día "
+                        +
+                        dia;
+
+
+                    selectorDia.appendChild(
+                        opcion
+                    );
+
+                }
+            );
+
+
+            if (
+                diasDisponibles.length > 0
+            ) {
+
+                selectorDia.value =
+                    diasDisponibles[
+                        diasDisponibles.length - 1
+                    ];
+
+            }
+
+        }
+
+
+        // =====================================================
+        // CONVERTIR HORA A SEGUNDOS
+        // =====================================================
+
+        function horaASegundos(
+            hora
+        ) {
+
+
+            if (
+                !hora ||
+                hora === "No disponible"
+            ) {
+
+                return null;
+
+            }
+
+
+            const partes =
+                hora.split(":");
+
+
+            if (
+                partes.length < 2
+            ) {
+
+                return null;
+
+            }
+
+
+            return (
+
+                parseInt(partes[0], 10)
+                * 3600
+
+                +
+
+                parseInt(partes[1], 10)
+                * 60
+
+                +
+
+                (
+                    partes[2]
+                        ? parseInt(
+                            partes[2],
+                            10
+                        )
+                        : 0
+                )
+
+            );
+
+        }
+
+
+        // =====================================================
+        // SEGUNDOS A HH:MM:SS
+        // =====================================================
+
+        function segundosAHora(
+            segundos
+        ) {
+
+
+            if (
+                segundos === null ||
+                segundos === undefined ||
+                isNaN(segundos) ||
+                segundos < 0
+            ) {
+
+                return "No disponible";
+
+            }
+
+
+            const horas =
+                Math.floor(
+                    segundos / 3600
+                );
+
+
+            const minutos =
+                Math.floor(
+                    (
+                        segundos % 3600
+                    ) / 60
+                );
+
+
+            const seg =
+                segundos % 60;
+
+
+            return (
+
+                String(horas)
+                    .padStart(2, "0")
+
+                +
+
+                ":"
+
+                +
+
+                String(minutos)
+                    .padStart(2, "0")
+
+                +
+
+                ":"
+
+                +
+
+                String(seg)
+                    .padStart(2, "0")
+
+            );
+
+        }
+
+
+        // =====================================================
+        // CALCULAR DIFERENCIA DE HORAS
+        // =====================================================
+
+        function diferenciaHoras(
+            horaInicio,
+            horaFin
+        ) {
+
+
+            const inicio =
+                horaASegundos(
+                    horaInicio
+                );
+
+
+            const fin =
+                horaASegundos(
+                    horaFin
+                );
+
+
+            if (
+                inicio === null ||
+                fin === null
+            ) {
+
+                return "No disponible";
+
+            }
+
+
+            let diferencia =
+                fin - inicio;
+
+
+            if (
+                diferencia < 0
+            ) {
+
+                diferencia +=
+                    24 * 3600;
+
+            }
+
+
+            return segundosAHora(
+                diferencia
+            );
+
+        }
+
+
+        // =====================================================
+        // CLASE DE ESTADO PARA TIEMPOS AUXILIARES
+        // =====================================================
+
+        function claseExceso(
+            disponible,
+            exceso
+        ) {
+
+            if (!disponible) {
+
+                return "estado-neutral";
+
+            }
+
+            if (exceso && exceso !== "00:00:00") {
+
+                return "estado-critico";
+
+            }
+
+            return "estado-ok";
+
+        }
+
+
+        // =====================================================
+        // ACTUALIZAR DASHBOARD
+        // =====================================================
+
+        function actualizarDashboard() {
+
+
+            const fechaSeleccionada =
+                selectorDia.value;
+
+
+            const registrosDia =
+                ADHERENCIA_DATA.filter(
+                    registro =>
+                        registro.fecha ===
+                        fechaSeleccionada
+                );
+
+
+            if (
+                registrosDia.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            // =================================================
+            // REGISTROS VÁLIDOS
+            // =================================================
+
+            const registrosValidos =
+                registrosDia.filter(
+                    registro =>
+                        !registro.sinLogout
+                        &&
+                        registro.adherencia !==
+                            null
+                );
+
+
+            // =================================================
+            // PROMEDIO
+            // =================================================
+
+            let promedio = 0;
+
+
+            if (
+                registrosValidos.length > 0
+            ) {
+
+                promedio =
+
+                    registrosValidos.reduce(
+                        (
+                            total,
+                            registro
+                        ) =>
+
+                            total +
+                            registro.adherencia,
+
+                        0
+
+                    )
+                    /
+                    registrosValidos.length;
+
+            }
+
+
+            // =================================================
+            // AGENTES
+            // =================================================
+
+            const agentes =
+                new Set(
+
+                    registrosDia.map(
+                        registro =>
+                            registro.agente
+                    )
+
+                );
+
+
+            // =================================================
+            // CUMPLEN
+            // =================================================
+
+            const cumplen =
+                registrosValidos.filter(
+                    registro =>
+                        registro.adherencia >=
+                        0.90
+                );
+
+
+            // =================================================
+            // GESTIÓN
+            // =================================================
+
+            const requierenGestion =
+                registrosValidos.filter(
+                    registro =>
+                        registro.adherencia <
+                        0.90
+                );
+
+
+            // =================================================
+            // EXCESOS
+            // =================================================
+
+            const excesoAlmuerzo =
+                registrosDia.filter(
+                    registro =>
+
+                        registro.breaksDisponible
+                        ===
+                        true
+
+                        &&
+
+                        registro.excesoAlmuerzo
+                        !==
+                        "00:00:00"
+                );
+
+
+            const excesoDescanso =
+                registrosDia.filter(
+                    registro =>
+
+                        registro.breaksDisponible
+                        ===
+                        true
+
+                        &&
+
+                        registro.excesoDescanso
+                        !==
+                        "00:00:00"
+                );
+
+
+            const excesoBano =
+                registrosDia.filter(
+                    registro =>
+
+                        registro.breaksDisponible
+                        ===
+                        true
+
+                        &&
+
+                        registro.excesoBano
+                        !==
+                        "00:00:00"
+                );
+
+
+            const excesoPausas =
+                registrosDia.filter(
+                    registro =>
+
+                        registro.breaksDisponible
+                        ===
+                        true
+
+                        &&
+
+                        registro.excesoPausasActivas
+                        !==
+                        "00:00:00"
+                );
+
+
+            // =================================================
+            // FECHA
+            // =================================================
+
+            const partesFecha =
+                fechaSeleccionada.split("-");
+
+
+            const fechaTexto =
+
+                partesFecha[2]
+                +
+                "/"
+                +
+                partesFecha[1]
+                +
+                "/"
+                +
+                partesFecha[0];
+
+
+            document.getElementById(
+                "fecha"
+            ).textContent =
+
+                "Información seleccionada: "
+                +
+                fechaTexto;
+
+
+            // =================================================
+            // KPI
+            // =================================================
+
+            document.getElementById(
+                "adherencia"
+            ).textContent =
+
+                (
+                    promedio * 100
+                ).toFixed(2)
+                +
+                "%";
+
+
+            document.getElementById(
+                "agentes"
+            ).textContent =
+                agentes.size;
+
+
+            document.getElementById(
+                "cumplen"
+            ).textContent =
+                cumplen.length;
+
+
+            document.getElementById(
+                "gestion"
+            ).textContent =
+                requierenGestion.length;
+
+
+            // =================================================
+            // COLORES DE ESTADO - KPI PRINCIPALES
+            // =================================================
+
+            const valorAdherencia =
+                document.getElementById("adherencia");
+
+            valorAdherencia.className = "valor";
+
+            if (promedio >= 0.90) {
+
+                valorAdherencia.classList.add("estado-ok");
+
+            }
+
+            else if (promedio >= 0.80) {
+
+                valorAdherencia.classList.add("estado-alerta");
+
+            }
+
+            else {
+
+                valorAdherencia.classList.add("estado-critico");
+
+            }
+
+
+            const valorCumplen =
+                document.getElementById("cumplen");
+
+            valorCumplen.className = "valor estado-ok";
+
+
+            const valorGestion =
+                document.getElementById("gestion");
+
+            valorGestion.className = "valor";
+
+            valorGestion.classList.add(
+                requierenGestion.length > 0
+                    ? "estado-critico"
+                    : "estado-ok"
+            );
+
+
+            // =================================================
+            // AUXILIARES
+            // =================================================
+
+            document.getElementById(
+                "excesoAlmuerzo"
+            ).textContent =
+                excesoAlmuerzo.length;
+
+
+            document.getElementById(
+                "excesoDescanso"
+            ).textContent =
+                excesoDescanso.length;
+
+
+            document.getElementById(
+                "excesoBano"
+            ).textContent =
+                excesoBano.length;
+
+
+            document.getElementById(
+                "excesoPausas"
+            ).textContent =
+                excesoPausas.length;
+
+
+            // =================================================
+            // COLORES DE ESTADO - TIEMPOS AUXILIARES
+            // =================================================
+
+            const auxiliaresEstado = [
+                ["excesoAlmuerzo", excesoAlmuerzo.length],
+                ["excesoDescanso", excesoDescanso.length],
+                ["excesoBano", excesoBano.length],
+                ["excesoPausas", excesoPausas.length]
+            ];
+
+
+            auxiliaresEstado.forEach(
+                ([id, cantidad]) => {
+
+                    const elemento =
+                        document.getElementById(id);
+
+                    elemento.className = "auxiliar-valor";
+
+                    elemento.classList.add(
+                        cantidad > 0
+                            ? "estado-critico"
+                            : "estado-ok"
+                    );
+
+                }
+            );
+
+
+            // =================================================
+            // TABLA
+            // =================================================
+
+            const tabla =
+                document.getElementById(
+                    "tablaAgentes"
+                );
+
+
+            tabla.innerHTML = "";
+
+
+            // =================================================
+            // CREAR FILAS
+            // =================================================
+
+            registrosDia
+
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+
+                        a.agente.localeCompare(
+                            b.agente
+                        )
+                )
+
+                .forEach(
+                    registro => {
+
+
+                        // =====================================
+                        // FILA PRINCIPAL
+                        // =====================================
+
+                        const fila =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        fila.className =
+                            "fila-agente";
+
+
+                        // =====================================
+                        // ADHERENCIA
+                        // =====================================
+
+                        let adherenciaTexto =
+                            "No disponible";
+
+
+                        let claseAdherencia =
+                            "sin-datos";
+
+
+                        if (
+
+                            registro.adherencia !==
+                                null
+
+                            &&
+
+                            registro.adherencia !==
+                                undefined
+
+                        ) {
+
+
+                            const porcentaje =
+                                registro.adherencia
+                                *
+                                100;
+
+
+                            adherenciaTexto =
+                                porcentaje.toFixed(
+                                    2
+                                )
+                                +
+                                "%";
+
+
+                            if (
+                                registro.adherencia >=
+                                0.90
+                            ) {
+
+                                claseAdherencia =
+                                    "estado-ok";
+
+                            }
+
+                            else if (
+                                registro.adherencia >=
+                                0.80
+                            ) {
+
+                                claseAdherencia =
+                                    "estado-alerta";
+
+                            }
+
+                            else {
+
+                                claseAdherencia =
+                                    "estado-critico";
+
+                            }
+
+                        }
+
+
+                        // =====================================
+                        // NOMBRE
+                        // =====================================
+
+                        fila.innerHTML = `
+
+                            <td
+                                class="agente-click"
+                            >
+
+                                <span class="flecha">
+                                    ▶
+                                </span>
+
+                                ${registro.agente}
+
+                            </td>
+
+
+                            <td
+                                class="${claseAdherencia}"
+                            >
+                                ${adherenciaTexto}
+                            </td>
+
+
+                            <td class="${claseExceso(registro.breaksDisponible, registro.excesoAlmuerzo)}">
+
+                                ${
+                                    registro.breaksDisponible
+
+                                    ?
+
+                                    registro.almuerzo
+
+                                    :
+
+                                    '<span class="sin-datos">No disponible</span>'
+                                }
+
+                            </td>
+
+
+                            <td class="${claseExceso(registro.breaksDisponible, registro.excesoDescanso)}">
+
+                                ${
+                                    registro.breaksDisponible
+
+                                    ?
+
+                                    registro.descanso
+
+                                    :
+
+                                    '<span class="sin-datos">No disponible</span>'
+                                }
+
+                            </td>
+
+
+                            <td class="${claseExceso(registro.breaksDisponible, registro.excesoBano)}">
+
+                                ${
+                                    registro.breaksDisponible
+
+                                    ?
+
+                                    registro.bano
+
+                                    :
+
+                                    '<span class="sin-datos">No disponible</span>'
+                                }
+
+                            </td>
+
+
+                            <td class="${claseExceso(registro.breaksDisponible, registro.excesoPausasActivas)}">
+
+                                ${
+                                    registro.breaksDisponible
+
+                                    ?
+
+                                    registro.pausasActivas
+
+                                    :
+
+                                    '<span class="sin-datos">No disponible</span>'
+                                }
+
+                            </td>
+
+                        `;
+
+
+                        tabla.appendChild(
+                            fila
+                        );
+
+
+                        // =====================================
+                        // FILA DE DETALLE
+                        // =====================================
+
+                        const filaDetalle =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        filaDetalle.className =
+                            "fila-detalle";
+
+
+                        filaDetalle.style.display =
+                            "none";
+
+
+                        // =====================================
+                        // TIEMPOS
+                        // =====================================
+
+                        const tiempoLogueado =
+                            diferenciaHoras(
+                                registro.login,
+                                registro.logout
+                            );
+
+
+                        const tiempoProgramado =
+                            diferenciaHoras(
+                                registro.mallaIngreso,
+                                registro.mallaSalida
+                            );
+
+
+              // =====================================
+// CALCULAR HORAS
+// =====================================
+
+const inicioProgramado =
+    horaASegundos(
+        registro.mallaIngreso
+    );
+
+const inicioReal =
+    horaASegundos(
+        registro.login
+    );
+
+const salidaProgramada =
+    horaASegundos(
+        registro.mallaSalida
+    );
+
+const salidaReal =
+    horaASegundos(
+        registro.logout
+    );
+
+
+// =====================================
+// DIFERENCIA DE INICIO
+// =====================================
+
+let diferenciaInicioTexto =
+    "No disponible";
+
+
+if (
+    inicioProgramado !== null &&
+    inicioReal !== null
+) {
+
+    const diferencia =
+        inicioReal -
+        inicioProgramado;
+
+
+    if (diferencia > 0) {
+
+        diferenciaInicioTexto =
+            "+" +
+            segundosAHora(
+                diferencia
+            );
+
+    }
+
+    else if (diferencia < 0) {
+
+        diferenciaInicioTexto =
+            "-" +
+            segundosAHora(
+                Math.abs(
+                    diferencia
+                )
+            );
+
+    }
+
+    else {
+
+        diferenciaInicioTexto =
+            "00:00:00";
+
+    }
+
+}
+
+
+// =====================================
+// DIFERENCIA DE SALIDA
+// =====================================
+
+let diferenciaSalidaTexto =
+    "No disponible";
+
+
+if (
+    salidaProgramada !== null &&
+    salidaReal !== null
+) {
+
+    const diferencia =
+        salidaReal -
+        salidaProgramada;
+
+
+    if (diferencia > 0) {
+
+        diferenciaSalidaTexto =
+            "+" +
+            segundosAHora(
+                diferencia
+            );
+
+    }
+
+    else if (diferencia < 0) {
+
+        diferenciaSalidaTexto =
+            "-" +
+            segundosAHora(
+                Math.abs(
+                    diferencia
+                )
+            );
+
+    }
+
+    else {
+
+        diferenciaSalidaTexto =
+            "00:00:00";
+
+    }
+
+}
+
+
+// =====================================
+// CONTENIDO DEL DETALLE
+// =====================================
+
+filaDetalle.innerHTML = `
+
+    <td colspan="6">
+
+        <div
+            class="detalle-agente"
+        >
+
+            <div
+                class="detalle-titulo"
+            >
+                DETALLE DE HORARIO
+            </div>
+
+
+            <div
+                class="detalle-grid"
+            >
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Inicio programado
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${registro.mallaIngreso}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Inicio real
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${registro.login}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Diferencia inicio
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${diferenciaInicioTexto}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Fin programado
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${registro.mallaSalida}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Fin real
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${registro.logout}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Diferencia salida
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${diferenciaSalidaTexto}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Tiempo programado
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${tiempoProgramado}
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                >
+
+                    <span
+                        class="detalle-label"
+                    >
+                        Tiempo logueado
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                    >
+                        ${tiempoLogueado}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </td>
+
+`;
+
+                        tabla.appendChild(
+                            filaDetalle
+                        );
+
+
+                        // =====================================
+                        // EVENTO CLICK
+                        // =====================================
+
+                        const celdaAgente =
+                            fila.querySelector(
+                                ".agente-click"
+                            );
+
+
+                        celdaAgente.addEventListener(
+                            "click",
+                            function() {
+
+
+                                const abierto =
+                                    filaDetalle.style.display
+                                    !==
+                                    "none";
+
+
+                                if (
+                                    abierto
+                                ) {
+
+
+                                    filaDetalle.style.display =
+                                        "none";
+
+
+                                    celdaAgente.querySelector(
+                                        ".flecha"
+                                    ).textContent =
+                                        "▶";
+
+                                }
+
+                                else {
+
+
+                                    filaDetalle.style.display =
+                                        "table-row";
+
+
+                                    celdaAgente.querySelector(
+                                        ".flecha"
+                                    ).textContent =
+                                        "▼";
+
+                                }
+
+                            }
+                        );
+
+
+                    }
+                );
+
+        }
+
+
+        // =====================================================
+        // CAMBIO DE MES
+        // =====================================================
+
+        selectorMes.addEventListener(
+            "change",
+            function() {
+
+                cargarDias();
+
+                actualizarDashboard();
+
+            }
+        );
+
+
+        // =====================================================
+        // CAMBIO DE DÍA
+        // =====================================================
+
+        selectorDia.addEventListener(
+            "change",
+            actualizarDashboard
+        );
+
+
+        // =====================================================
+        // CARGA INICIAL
+        // =====================================================
+
+        cargarDias();
+
+        actualizarDashboard();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
